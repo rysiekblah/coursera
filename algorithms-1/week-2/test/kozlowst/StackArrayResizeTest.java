@@ -9,14 +9,13 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by tomek on 9/19/14.
  */
-public class StackOfStringTest {
+public class StackArrayResizeTest {
 
     @Test
     public void test1() {
-
         String[] items = new String[]{"all", "politicians", "are", "idiots"};
 
-        StackOfString stack = new StackOfString(items.length);
+        StackArrayResize stack = new StackArrayResize();
 
         for (String item : items) {
             stack.push(item);
@@ -34,7 +33,7 @@ public class StackOfStringTest {
     public void test2() {
         String[] items = new String[]{"all", "politicians", "are", "idiots"};
 
-        StackOfString stack = new StackOfString(items.length);
+        StackArrayResize stack = new StackArrayResize();
 
         for (String item : items) {
             stack.push(item);
@@ -49,7 +48,7 @@ public class StackOfStringTest {
                 "0", "1", "2", "3", "4", "5", "6", "7", "9"
         };
 
-        StackOfString stack = new StackOfString(items.length);
+        StackArrayResize stack = new StackArrayResize();
 
         assertEquals(0, stack.size());
         assertTrue(stack.isEmpty());
