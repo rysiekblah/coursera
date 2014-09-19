@@ -1,8 +1,7 @@
 .idea/
 *.iml
-algorithms-1/week-1/out
+*out
 *lib_managed
-scala-func-prog/example/target
-scala-func-prog/example/project/target
-scala-func-prog/example/submission
+*target
+*submission
 
