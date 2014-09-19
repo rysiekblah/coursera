@@ -11,47 +11,21 @@ import static org.junit.Assert.assertEquals;
  */
 public class StackArrayResizeTest {
 
+    private CommonStackTest commonStackTest = new CommonStackTest();
+
     @Test
     public void test1() {
-        String[] items = new String[]{"all", "politicians", "are", "idiots"};
-
-        StackArrayResize stack = new StackArrayResize();
-
-        for (String item : items) {
-            stack.push(item);
-        }
-
-        assertFalse(stack.isEmpty());
-        assertEquals(items.length, stack.size());
-
-        for (int i = items.length - 1; i >= 0; i--) {
-            assertEquals(items[i], stack.pop());
-        }
+        commonStackTest.test1(new StackArrayResize());
     }
 
     @Test
     public void test2() {
-        String[] items = new String[]{"all", "politicians", "are", "idiots"};
-
-        StackArrayResize stack = new StackArrayResize();
-
-        for (String item : items) {
-            stack.push(item);
-            assertEquals(item, stack.pop());
-            assertTrue(stack.isEmpty());
-        }
+        commonStackTest.test2(new StackArrayResize());
     }
 
     @Test
     public void test3() {
-        String[] items = new String[]{
-                "0", "1", "2", "3", "4", "5", "6", "7", "9"
-        };
-
-        StackArrayResize stack = new StackArrayResize();
-
-        assertEquals(0, stack.size());
-        assertTrue(stack.isEmpty());
+        commonStackTest.test3(new StackArrayResize());
     }
 
 }

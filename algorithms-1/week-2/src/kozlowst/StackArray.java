@@ -23,4 +23,10 @@ public abstract class StackArray<T> implements Stack<T> {
     public int size() {
         return N;
     }
+
+    @Override
+    public void clear() {
+        items = null;
+        N = 0;
+    }
 }

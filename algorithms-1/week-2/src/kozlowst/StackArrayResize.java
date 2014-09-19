@@ -14,20 +14,23 @@ public class StackArrayResize extends StackArray<String> {
     @Override
     public void push(String item) {
         items[N++] = item;
-        if (N >= items.length / 2) {
-            resize();
+        if (N == items.length) {
+            resize(N*2);
         }
     }
 
     @Override
     public String pop() {
+        if (N > 0 && N < items.length / 4) {
+            resize(items.length / 2);
+        }
         return items[--N];
     }
 
-    private void resize() {
+    private void resize(int capacity) {
         System.out.println("Size: " + items.length + ", content: " + Arrays.toString(items));
-        String[] tmp = new String[N * 2];
-        for (int i = 0; i < items.length; i++) {
+        String[] tmp = new String[capacity];
+        for (int i = 0; i < N; i++) {
             tmp[i] = items[i];
         }
         items = tmp;
