@@ -1,4 +1,4 @@
-package kozlowst;
+package kozlowst.stack;
 
 /**
  * Created by tomek on 9/19/14.

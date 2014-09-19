@@ -1,4 +1,6 @@
-package kozlowst;
+package kozlowst.stack;
+
+import kozlowst.stack.Stack;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;

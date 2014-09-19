@@ -1,4 +1,4 @@
-package kozlowst;
+package kozlowst.stack;
 
 import java.util.Arrays;
 
