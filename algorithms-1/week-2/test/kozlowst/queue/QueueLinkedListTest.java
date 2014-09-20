@@ -7,32 +7,21 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by tomek on 9/19/14.
+ * Created by tomek on 9/20/14.
  */
-public class QueueArrayTest {
+public class QueueLinkedListTest {
 
     @Test
     public void test1() {
 
-    }
-
-    @Test
-    public void test3() {
         String[] items3 = new String[]{
                 "0", "1", "2", "3", "4", "5", "6", "7", "9"
         };
 
-        QueueArray<String> queue = new QueueArray<String>() {
-            @Override
-            protected void init() {
-                if (items == null) {
-                    items = new String[1];
-                }
-            }
-
+        QueueLinkedList<String> queue = new QueueLinkedList<String>() {
             @Override
             public String[] createTable(int size) {
-                return new String[size];
+                return null;
             }
         };
 
@@ -43,7 +32,6 @@ public class QueueArrayTest {
         assertFalse(queue.isEmpty());
         assertEquals(items3.length, queue.size());
 
-        queue.print();
         for (String s : items3) {
             assertEquals(s, queue.dequeue());
         }
