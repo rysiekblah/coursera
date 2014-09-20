@@ -9,7 +9,8 @@ import org.junit.runners.Suite;
         DequeExceptionsTest.class,
         DequeFirstOperationsTest.class,
         DequeLastOperationsTest.class,
-        DequeMixedOperationsTest.class
+        DequeMixedOperationsTest.class,
+        DequeIteratorTest.class
 })
 public class DequeTestSuite {
 }
