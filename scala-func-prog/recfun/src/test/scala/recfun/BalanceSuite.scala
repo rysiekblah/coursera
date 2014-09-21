@@ -32,4 +32,8 @@ class BalanceSuite extends FunSuite {
   test("balance: no brackets") {
     assert(balance("tomek polubil jezyk scala".toList))
   }
+
+  test("balance: another test") {
+    assert(!balance("((())".toList))
+  }
 }
