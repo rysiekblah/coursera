@@ -71,4 +71,13 @@ public class RandomizedQueExceptionsTest {
         it.next();
     }
 
+    @Test
+    public void testIterateEmpty() {
+        RandomizedQueue queue = new RandomizedQueue();
+        for (Object o : queue) {
+            fail("Shouldn't enter here");
+        }
+
+    }
+
 }

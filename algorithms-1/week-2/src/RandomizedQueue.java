@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -48,7 +49,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // return (but do not delete) a random item
     public Item sample() {
         checkContent();
-        return null;
+        Node<Item> node = head;
+        for (int i = 0; i < StdRandom.uniform(N); i++) {
+            node = node.next;
+        }
+        return node.item;
     }
 
     private void checkContent() {
@@ -69,12 +74,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private class ListIterator implements Iterator<Item> {
 
-        private Node<Item> node = head;
+        //private Node<Item> node = head;
         private int index = 0;
+        private int[] ii = new int[N];
+
+        private ListIterator() {
+            for (int i = 0; i < N; i++) {
+                ii[i] = i;
+            }
+            StdRandom.shuffle(ii);
+            System.out.println("index order: " + Arrays.toString(ii));
+        }
 
         @Override
         public boolean hasNext() {
-            return node.next != null;
+            return !(index == N);
         }
 
         @Override
@@ -82,8 +96,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             if (N == index) {
                 throw new NoSuchElementException();
             }
+            Node<Item> n = head;
+            for (int i = 0; i < ii[index]; i++) {
+                n = n.next;
+            }
             index++;
-            return null;
+            return n.item;
         }
 
         @Override

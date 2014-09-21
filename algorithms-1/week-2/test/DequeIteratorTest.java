@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import static junit.framework.Assert.fail;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
@@ -38,6 +39,16 @@ public class DequeIteratorTest {
             i++;
         }
         assertTrue(items.length == i);
+    }
+
+    @Test
+    public void testIterateEmpty() {
+        Deque deque = new Deque();
+
+        for (Object o : deque) {
+            fail("Shouldn't enter here");
+        }
+
     }
 
 }
