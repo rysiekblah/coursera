@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -15,10 +16,10 @@ public class DequeIteratorTest {
             deque.addFirst(item);
         }
 
-        int i = 0;
+        int i = 9;
         for (Integer integer : deque) {
             assertEquals(items[i], integer);
-            i++;
+            i--;
         }
 
     }
@@ -36,6 +37,7 @@ public class DequeIteratorTest {
             assertEquals(items[i], integer);
             i++;
         }
+        assertTrue(items.length == i);
     }
 
 }

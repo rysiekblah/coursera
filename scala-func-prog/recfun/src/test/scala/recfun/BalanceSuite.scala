@@ -24,4 +24,12 @@ class BalanceSuite extends FunSuite {
   test("balance: counting is not enough") {
     assert(!balance("())(".toList))
   }
+
+  test("balance: empty list") {
+    assert(balance("".toList))
+  }
+
+  test("balance: no brackets") {
+    assert(balance("tomek polubil jezyk scala".toList))
+  }
 }

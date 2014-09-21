@@ -1,8 +1,7 @@
 import org.junit.Test;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by tomek on 9/20/14.
@@ -65,6 +64,47 @@ public class DequeExceptionsTest {
         deque.addLast(1);
         deque.removeFirst();
         deque.removeFirst();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testCallIteratorRemove() {
+        Deque deque = new Deque();
+        deque.iterator().remove();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testCallIteratorNextIfEmpty() {
+        Deque deque = new Deque();
+        deque.iterator().next();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testCallIteratorNextIfEmpty2() {
+        Deque<Integer> deque = new Deque<>();
+        deque.addFirst(1);
+        Iterator<Integer> it = deque.iterator();
+        it.next();
+        it.next();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testCallIteratorNextIfEmpty3() {
+        Deque<Integer> deque = new Deque<>();
+        deque.addLast(1);
+        Iterator<Integer> it = deque.iterator();
+        it.next();
+        it.next();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testCallIteratorNextIfEmpty4() {
+        Deque<Integer> deque = new Deque<>();
+        deque.addLast(1);
+        deque.addFirst(2);
+        Iterator<Integer> it = deque.iterator();
+        it.next();
+        it.next();
+        it.next();
     }
 
 }

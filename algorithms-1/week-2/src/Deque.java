@@ -92,10 +92,11 @@ public class Deque<Item> implements Iterable<Item> {
     private class ListIterator implements Iterator<Item> {
 
         private int index = 0;
+        private Node<Item> node = head.next;
 
         @Override
         public boolean hasNext() {
-            return false;
+            return node != null && !(N == index);
         }
 
         @Override
@@ -103,7 +104,11 @@ public class Deque<Item> implements Iterable<Item> {
             if (N == index || isEmpty()) {
                 throw new NoSuchElementException();
             }
-            return null;
+            index++;
+            Item item = node.item;
+            node = node.next;
+            System.out.println("index: " + index + ", item: " + item + ", next: " + node + ", N: " + N);
+            return item;
         }
 
         @Override
