@@ -4,13 +4,13 @@ import scala.util.control.Breaks._
 
 object Main {
   def main(args: Array[String]) {
-//    println("Pascal's Triangle")
-//    for (row <- 0 to 10) {
-//      for (col <- 0 to row)
-//        print(pascal(col, row) + " ")
-//      println()
-//    }
-//    println(pascal(4, 2))
+    println("Pascal's Triangle")
+    for (row <- 0 to 10) {
+      for (col <- 0 to row)
+        print(pascal(col, row) + " ")
+      println()
+    }
+    println(pascal(4, 2))
 
     println(balance("(tomek)(--".toList))
 
@@ -20,11 +20,8 @@ object Main {
    * Exercise 1
    */
   def pascal(c: Int, r: Int): Int = {
-    if (r == 0 || c == 0 || c == r) {
-      1
-    } else {
-      pascal(c - 1, r - 1) + pascal(c, r -1 )
-    }
+    if (r == 0 || c == 0 || c == r) 1
+    else pascal(c - 1, r - 1) + pascal(c, r -1 )
   }
 
   /**
