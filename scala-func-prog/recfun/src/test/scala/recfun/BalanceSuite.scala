@@ -36,4 +36,8 @@ class BalanceSuite extends FunSuite {
   test("balance: another test") {
     assert(!balance("((())".toList))
   }
+
+  test("balance: yet another test") {
+    assert(!balance("hkj)sfs(sdf".toList))
+  }
 }
