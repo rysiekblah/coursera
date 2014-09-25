@@ -7,3 +7,13 @@ def sum(f: Int => Int, a: Int, b: Int): Int = {
 }
 
 sum(x => x * x, 3, 5)
+
+def concat(f: String => String, a: String) = {
+  println(f(a))
+}
+
+def hello(a: String) = "Hello " + a
+
+concat(hello, "Tomek")
+
+
