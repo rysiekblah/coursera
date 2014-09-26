@@ -6,8 +6,16 @@ import java.util.NoSuchElementException;
  */
 public class Deque<Item> implements Iterable<Item> {
 
-    private Node<Item> head, tail;
+    private Node<Item> head;
+    private Node<Item> tail = new Node<>();
     private int N;
+
+    // construct an empty deque
+    public Deque() {
+        head = tail;
+        head.setNext(tail);
+        tail.setPrev(head);
+    }
 
     // return an iterator over items in order from front to end
     @Override
@@ -15,12 +23,6 @@ public class Deque<Item> implements Iterable<Item> {
         return new ListIterator();
     }
 
-    // construct an empty deque
-    public Deque() {
-        head = tail = new Node();
-        head.next = tail;
-        tail.prev = head;
-    }
     // is the deque empty?
     public boolean isEmpty() {
         return N == 0;
@@ -35,9 +37,9 @@ public class Deque<Item> implements Iterable<Item> {
     public void addFirst(Item item) {
         checkItem(item);
         Node<Item> node = new Node<>();
-        head.item = item;
-        head.prev = node;
-        node.next = head;
+        head.setItem(item);
+        head.setPrev(node);
+        node.setNext(head);
         head = node;
         N++;
 
@@ -47,9 +49,9 @@ public class Deque<Item> implements Iterable<Item> {
     public void addLast(Item item) {
         checkItem(item);
         Node<Item> node = new Node<>();
-        node.item = item;
-        tail.next = node;
-        node.prev = tail;
+        node.setItem(item);
+        tail.setNext(node);
+        node.setPrev(tail);
         tail = node;
         N++;
     }
@@ -59,8 +61,8 @@ public class Deque<Item> implements Iterable<Item> {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
-        Item item = head.next.item;
-        head = head.next;
+        Item item = head.getNext().getItem();
+        head = head.getNext();
         N--;
         return item;
     }
@@ -70,10 +72,10 @@ public class Deque<Item> implements Iterable<Item> {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
-        Item item = tail.item;
-        System.out.println("ItemTail: " + item);
-        tail.prev.next = null;
-        tail = tail.prev;
+        Item item = tail.getItem();
+        //System.out.println("ItemTail: " + item);
+        tail.getPrev().setNext(null);
+        tail = tail.getPrev();
         N--;
         return item;
     }
@@ -92,7 +94,7 @@ public class Deque<Item> implements Iterable<Item> {
     private class ListIterator implements Iterator<Item> {
 
         private int index = 0;
-        private Node<Item> node = head.next;
+        private Node<Item> node = head.getNext();
 
         @Override
         public boolean hasNext() {
@@ -105,9 +107,9 @@ public class Deque<Item> implements Iterable<Item> {
                 throw new NoSuchElementException();
             }
             index++;
-            Item item = node.item;
-            node = node.next;
-            System.out.println("index: " + index + ", item: " + item + ", next: " + node + ", N: " + N);
+            Item item = node.getItem();
+            node = node.getNext();
+            //System.out.println("index: " + index + ", item: " + item + ", next: " + node + ", N: " + N);
             return item;
         }
 
@@ -118,8 +120,32 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     private static class Node<Item> {
-        Item item;
-        Node<Item> next;
-        Node<Item> prev;
+        private Item item;
+        private Node<Item> next;
+        private Node<Item> prev;
+
+        public Item getItem() {
+            return item;
+        }
+
+        public void setItem(Item newitem) {
+            this.item = newitem;
+        }
+
+        public Node<Item> getNext() {
+            return next;
+        }
+
+        public void setNext(Node<Item> newnext) {
+            this.next = newnext;
+        }
+
+        public Node<Item> getPrev() {
+            return prev;
+        }
+
+        public void setPrev(Node<Item> newprev) {
+            this.prev = newprev;
+        }
     }
 }

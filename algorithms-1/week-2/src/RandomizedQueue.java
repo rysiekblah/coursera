@@ -1,4 +1,4 @@
-import java.util.Arrays;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -7,12 +7,13 @@ import java.util.NoSuchElementException;
  */
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-    private Node<Item> head, tail;
+    private Node<Item> head;
+    private Node<Item> tail = new Node<>();
     private int N;
 
     // construct an empty randomized queue
     public RandomizedQueue() {
-        head = tail = new Node();
+        head = tail;
     }
 
     // is the queue empty?
@@ -31,9 +32,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new NullPointerException();
         }
         N++;
-        tail.item = item;
+        tail.setItem(item);
         Node<Item> node = new Node<>();
-        tail.next = node;
+        tail.setNext(node);
         tail = node;
     }
 
@@ -41,8 +42,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public Item dequeue() {
         checkContent();
         N--;
-        Item item = head.item;
-        head = head.next;
+        Item item = head.getItem();
+        head = head.getNext();
         return item;
     }
 
@@ -51,9 +52,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         checkContent();
         Node<Item> node = head;
         for (int i = 0; i < StdRandom.uniform(N); i++) {
-            node = node.next;
+            node = node.getNext();
         }
-        return node.item;
+        return node.getItem();
     }
 
     private void checkContent() {
@@ -83,7 +84,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
                 ii[i] = i;
             }
             StdRandom.shuffle(ii);
-            System.out.println("index order: " + Arrays.toString(ii));
+            //System.out.println("index order: " + Arrays.toString(ii));
         }
 
         @Override
@@ -98,10 +99,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             }
             Node<Item> n = head;
             for (int i = 0; i < ii[index]; i++) {
-                n = n.next;
+                n = n.getNext();
             }
             index++;
-            return n.item;
+            return n.getItem();
         }
 
         @Override
@@ -111,8 +112,32 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private class Node<Item> {
-        Item item;
-        Node<Item> next;
-        Node<Item> prev;
+        private Item item;
+        private Node<Item> next;
+        private Node<Item> prev;
+
+        public Item getItem() {
+            return item;
+        }
+
+        public void setItem(Item newitem) {
+            this.item = newitem;
+        }
+
+        public Node<Item> getNext() {
+            return next;
+        }
+
+        public void setNext(Node<Item> newnext) {
+            this.next = newnext;
+        }
+
+        public Node<Item> getPrev() {
+            return prev;
+        }
+
+        public void setPrev(Node<Item> newprev) {
+            this.prev = newprev;
+        }
     }
 }
