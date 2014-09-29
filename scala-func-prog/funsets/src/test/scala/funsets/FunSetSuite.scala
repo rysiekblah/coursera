@@ -52,6 +52,8 @@ class FunSetSuite extends FunSuite {
 
   test("contains is implemented") {
     assert(contains(x => true, 100))
+    assert(contains(Set(1,2,4,6), 4))
+    assert(!contains(Set(1,2,4,6), 5))
   }
   
   /**
@@ -75,6 +77,7 @@ class FunSetSuite extends FunSuite {
 
   trait TestSets {
     val s1 = singletonSet(1)
+    val s1a = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
   }
@@ -86,7 +89,7 @@ class FunSetSuite extends FunSuite {
    * Once you finish your implementation of "singletonSet", exchange the
    * function "ignore" by "test".
    */
-  ignore("singletonSet(1) contains 1") {
+  test("singletonSet(1) contains 1") {
     
     /**
      * We create a new instance of the "TestSets" trait, this gives us access
@@ -98,6 +101,9 @@ class FunSetSuite extends FunSuite {
        * the test fails. This helps identifying which assertion failed.
        */
       assert(contains(s1, 1), "Singleton")
+      assert(s1.hashCode() === s1a.hashCode())
+      assert(s1.hashCode() != s2.hashCode())
+
     }
   }
 

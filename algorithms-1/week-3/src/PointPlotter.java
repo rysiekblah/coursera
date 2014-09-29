@@ -21,10 +21,10 @@ public class PointPlotter {
         // rescale coordinates and turn on animation mode
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
-//        StdDraw.setXscale(0, 20);
-//        StdDraw.setYscale(0, 20);
+//        StdDraw.setXscale(0, 2000000);
+//        StdDraw.setYscale(0, 2000000);
         StdDraw.show(0);
-        StdDraw.setPenRadius(0.01);  // make the points a bit larger
+        StdDraw.setPenRadius(0.001);  // make the points a bit larger
 
         List<Point> points = new ArrayList<Point>();
 
@@ -41,13 +41,15 @@ public class PointPlotter {
             p.draw();
         }
 
-        Collections.sort(points);
-        for (Point point : points) {
-            System.out.println(point.toString());
-        }
-
-
-        bruteForce(points);
+//        Collections.sort(points);
+//        for (Point point : points) {
+//            System.out.println(point.toString());
+//        }
+//
+//
+//        bruteForce(points);
+//
+//        System.out.println("BF END !!!");
 
 
         // display to screen all at once
