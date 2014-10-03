@@ -11,11 +11,11 @@ val sbig2 = union(s1, s3)
 val sbig = union(union(s1,s2), union(s3, s4))
 def intersect(s: Set, t: Set): Set = in => s(in) && t(in)
 val sint = intersect(sbig1, sbig2)
+contains(sint, 2)
 def diff(s: Set, t: Set): Set = in => s(in) && !t(in)
 val sdiff = diff(sbig1, sbig2)
 
 def filter(s: Set, p: Int => Boolean): Set = x => p(x) && s(x)
-val s = filter(sbig, x => x<2)
 
 def forall(s: Set, p: Int => Boolean): Boolean = {
   def iter(a: Int): Boolean = {
@@ -25,9 +25,11 @@ def forall(s: Set, p: Int => Boolean): Boolean = {
   }
   iter(-1000)
 }
-forall(sbig, x => x%4 == 0)
+//forall(sbig, x => x%3 == 0)
 
-def exists(s: Set, p: Int => Boolean): Boolean = forall(s, p)
+def exists(s: Set, p: Int => Boolean): Boolean = !forall(s, x => !p(x))
 
-exists(sbig, x => x % 4 == 0)
+def map(s: Set, f: Int => Int): Set = in => exists(s, x => f(x) == in)
+val sm = map(sbig, x => x * 3)
+sm(6)
 
