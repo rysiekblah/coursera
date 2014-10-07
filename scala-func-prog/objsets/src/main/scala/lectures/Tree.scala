@@ -1,12 +1,8 @@
+package lectures
 
-val t0 = new Empty
-val t1 = new NonEmpty(2, new Empty, new Empty)
-val t2 = t1 incl 4 incl 5 incl 1 incl 20 incl 15
-val t3 = t1 incl 3 incl 100
-val t4 = t2.union(t3)
-t4.foreach(x => x+1)
-val t5 = t4.filter(x => x == 100 || x == 5)
-
+/**
+ * Created by tomek on 10/6/14.
+ */
 abstract class IntSet {
   def incl(x: Int): IntSet
   def contains(x: Int): Boolean
@@ -45,8 +41,8 @@ class NonEmpty(elem: Int, left: IntSet, right: IntSet) extends IntSet {
   }
 
   override def filterAcc(p: (Int) => Boolean, acc: IntSet): IntSet = {
-    if(p(elem)) left.filterAcc(p, right.filterAcc(p, acc incl elem))
-    else left.filterAcc(p, right.filterAcc(p, acc))
+    if(p(elem)) acc incl elem
+    left.filterAcc(p, acc)
+    right.filterAcc(p, acc)
   }
 }
-
