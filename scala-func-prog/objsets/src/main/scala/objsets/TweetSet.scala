@@ -67,7 +67,7 @@ abstract class TweetSet {
    * and be implemented in the subclasses?
    */
   def mostRetweeted: Tweet
-  def findTweet(t: Tweet): Tweet
+  def findTweet(f: Tweet => Boolean, t: Tweet): Tweet
 
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
@@ -114,7 +114,7 @@ class Empty extends TweetSet {
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc
   def union(that: TweetSet): TweetSet = that
   def mostRetweeted: Tweet = throw new NoSuchElementException
-  def findTweet(t: Tweet): Tweet = t
+  def findTweet(f: Tweet => Boolean, t: Tweet): Tweet = t
   /**
    * The following methods are already implemented
    */
@@ -138,12 +138,12 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   def union(that: TweetSet): TweetSet = ((left union right) union that) incl elem
 
   def mostRetweeted: Tweet = {
-    findTweet(elem)
+    findTweet(t => t.retweets > elem.retweets, elem)
   }
 
-  def findTweet(t: Tweet): Tweet = {
-    if(t.retweets > elem.retweets) left.findTweet(right.findTweet(t))
-    else left.findTweet(right.findTweet(elem))
+  def findTweet(f: Tweet => Boolean, t: Tweet): Tweet = {
+    if(f(t)) left.findTweet(f, right.findTweet(f, t))
+    else left.findTweet(f, right.findTweet(f, elem))
   }
 
   /**

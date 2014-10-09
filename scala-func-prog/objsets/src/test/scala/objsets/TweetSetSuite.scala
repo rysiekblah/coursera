@@ -22,7 +22,8 @@ class TweetSetSuite extends FunSuite {
       .incl(new Tweet("34", "f", 6))
     val set7 = set1
       .incl(new Tweet("s", "wewerwe", 101))
-      .incl(new Tweet("1", "a", 72))
+      .incl(new Tweet("tom", "a", 72))
+      .incl(new Tweet("zyg", "a", 72))
       .incl(new Tweet("qwe", "df", 344))
       .incl(new Tweet("34", "f", 6))
   }
@@ -79,6 +80,14 @@ class TweetSetSuite extends FunSuite {
     new TestSets {
       assert(set6.mostRetweeted.retweets === 7)
       assert(set7.mostRetweeted.retweets === 344)
+    }
+  }
+
+  test("findTweet: check it out") {
+    new TestSets {
+      val tw = set7.findTweet(t => t.user == "tom" && t.retweets == 72, new Tweet("", "", 0))
+      assert(tw.user === "tom")
+      assert(tw.retweets === 72)
     }
   }
 
