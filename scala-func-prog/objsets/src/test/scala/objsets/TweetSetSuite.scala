@@ -134,4 +134,10 @@ class TweetSetSuite extends FunSuite {
       assert(l.head.retweets === 6)
     }
   }
+
+  test("TweetREades: test") {
+    new TestSets {
+      println("Size:" + size(TweetReader.allTweets))
+    }
+  }
 }
