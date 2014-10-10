@@ -23,7 +23,7 @@ class TweetSetSuite extends FunSuite {
     val set7 = set1
       .incl(new Tweet("s", "wewerwe", 101))
       .incl(new Tweet("tom", "a", 72))
-      .incl(new Tweet("zyg", "a", 72))
+      .incl(new Tweet("zyg", "sd", 72))
       .incl(new Tweet("qwe", "df", 344))
       .incl(new Tweet("34", "f", 6))
   }
@@ -83,11 +83,25 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
-  test("findTweet: check it out") {
+  test("mostRecent: check if removing has occured") {
     new TestSets {
-      val tw = set7.findTweet(t => t.user == "tom" && t.retweets == 72, new Tweet("", "", 0))
-      assert(tw.user === "tom")
-      assert(tw.retweets === 72)
+      assert(set7.mostRetweeted.retweets === 6)
+      var s = set7.remove(set7.mostRetweeted)
+      assert(s.mostRetweeted.retweets === 72)
+      s = s.remove(s.mostRetweeted)
+      assert(s.mostRetweeted.retweets === 72)
+      s = s.remove(s.mostRetweeted)
+      assert(s.mostRetweeted.retweets === 101)
+      s = s.remove(s.mostRetweeted)
+      assert(s.mostRetweeted.retweets === 344)
+    }
+  }
+
+  test("remove: check it") {
+    new TestSets {
+      assert(set5.contains(d) === true)
+      val s = set5.remove(d)
+      assert(s.contains(d) === false)
     }
   }
 
@@ -96,6 +110,28 @@ class TweetSetSuite extends FunSuite {
       val trends = set5.descendingByRetweet
       assert(!trends.isEmpty)
       assert(trends.head.user == "a" || trends.head.user == "b")
+    }
+  }
+
+  /*val set7 = set1
+      .incl(new Tweet("s", "wewerwe", 101))
+      .incl(new Tweet("tom", "a", 72))
+      .incl(new Tweet("zyg", "a", 72))
+      .incl(new Tweet("qwe", "df", 344))
+      .incl(new Tweet("34", "f", 6))*/
+
+  test("descending: set7") {
+    new TestSets {
+      var l = set7.descendingByRetweet
+      assert(l.head.retweets === 344)
+      l = l.tail
+      assert(l.head.retweets === 101)
+      l = l.tail
+      assert(l.head.retweets === 72)
+      l = l.tail
+      assert(l.head.retweets === 72)
+      l = l.tail
+      assert(l.head.retweets === 6)
     }
   }
 }

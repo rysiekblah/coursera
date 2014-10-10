@@ -67,7 +67,7 @@ abstract class TweetSet {
    * and be implemented in the subclasses?
    */
   def mostRetweeted: Tweet
-  def findTweet(f: Tweet => Boolean, t: Tweet): Tweet
+  def findMostRetweeted(t: Tweet): Tweet
 
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
@@ -78,7 +78,20 @@ abstract class TweetSet {
    * Question: Should we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def descendingByRetweet: TweetList = ???
+  def descendingByRetweet: TweetList = {
+    def assign(l: TweetList, tw: Tweet, ts: TweetSet): TweetList =
+      collectTweets(new Cons(tw, l), ts.remove(tw))
+
+    def collectTweets(l: TweetList, ts: TweetSet): TweetList = {
+      try {
+        assign(l,ts.mostRetweeted, ts)
+      } catch {
+        case e: NoSuchElementException => l
+      }
+
+    }
+    collectTweets(Nil, this)
+  }
 
 
   /**
@@ -114,7 +127,7 @@ class Empty extends TweetSet {
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc
   def union(that: TweetSet): TweetSet = that
   def mostRetweeted: Tweet = throw new NoSuchElementException
-  def findTweet(f: Tweet => Boolean, t: Tweet): Tweet = t
+  def findMostRetweeted(t: Tweet): Tweet = t
   /**
    * The following methods are already implemented
    */
@@ -130,21 +143,17 @@ class Empty extends TweetSet {
 
 class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 
-  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = {
+  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet =
     if(p(elem)) left.filterAcc(p, right.filterAcc(p, acc incl elem))
     else left.filterAcc(p, right.filterAcc(p, acc))
-  }
 
   def union(that: TweetSet): TweetSet = ((left union right) union that) incl elem
 
-  def mostRetweeted: Tweet = {
-    findTweet(t => t.retweets > elem.retweets, elem)
-  }
+  def mostRetweeted: Tweet = findMostRetweeted(elem)
 
-  def findTweet(f: Tweet => Boolean, t: Tweet): Tweet = {
-    if(f(t)) left.findTweet(f, right.findTweet(f, t))
-    else left.findTweet(f, right.findTweet(f, elem))
-  }
+  def findMostRetweeted(t: Tweet): Tweet =
+    if (t.retweets < elem.retweets) left.findMostRetweeted(right.findMostRetweeted(t))
+    else left.findMostRetweeted(right.findMostRetweeted(elem))
 
   /**
    * The following methods are already implemented
