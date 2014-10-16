@@ -1,5 +1,5 @@
 
-val litery = List('s', 'a', 'w', 'a', 'a', 'w', 'a')
+val litery = List('s', 'a', 'w', 'a', 'a', 'w', 'a', 'z')
 
 
 def times(chars: List[Char]): List[(Char, Int)] = {
@@ -24,6 +24,6 @@ def acc(ch: Char, pair: (Char, Int)): (Char,Int) = pair match {
   case _ => pair
 }
 
-times(litery)
+val s = times(litery).sortBy(x => x._2)
 
 //iterateAcc(('a', 1), List(('s', 2), ('a', 3)))
