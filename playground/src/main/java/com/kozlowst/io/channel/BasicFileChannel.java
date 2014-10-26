@@ -28,11 +28,19 @@ public class BasicFileChannel {
         ByteBuffer buff = ByteBuffer.allocate(4);
         int bytes;
         while ((bytes = fileChannel.read(buff)) != -1) {
-            println(" -- Num of bytes: " + bytes);
+            //println(" -- Num of bytes: " + bytes);
             buff.flip();
             while(buff.hasRemaining()) print((char) buff.get());
             buff.clear();
         }
+        buff.position(0);
+        if (buff.hasRemaining()) {
+            System.out.println("\nReseted\n");
+            while(buff.hasRemaining()) print((char) buff.get());
+        } else {
+            System.out.println("Ups, reset failed");
+        }
+        System.out.printf("\n\n");
         accessFile.close();
     }
 

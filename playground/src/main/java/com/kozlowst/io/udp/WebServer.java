@@ -49,7 +49,7 @@ public class WebServer extends Thread {
         long time = System.currentTimeMillis();
         buffer.append("HTTP/1.1 200 OK\n\n");
         buffer.append("<html>");
-        buffer.append("<head><meta http-equiv=\"Refresh\" content=\"1\" /></head>");
+        buffer.append("<head><title>HTML Reference</title><meta http-equiv=\"Refresh\" content=\"1\" /></head>");
         buffer.append("<body>");
         buffer.append("<html><b>Hello</b> there " + time + " </html>");
         buffer.append("</body></html>");
