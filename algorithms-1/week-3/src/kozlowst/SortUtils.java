@@ -14,7 +14,18 @@ public class SortUtils {
         return true;
     }
 
+    public static boolean isSorted(Comparable[] a, int lo, int hi) {
+        for (int i = lo+1; i < hi; i++) {
+            if (!less(a[i - 1], a[i]) && !equal(a[i - 1], a[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static boolean less(Comparable a, Comparable b) {
+        System.out.println("a: " + a + ", b: " + b);
         return a.compareTo(b) < 0;
     }
 

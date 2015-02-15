@@ -267,19 +267,19 @@ public class PercolationTest {
 
         Percolation p = new Percolation(4);
         p.open(1, 4);
-        p.print();
+        //p.print();
         p.open(2, 4);
-        p.print();
+        //p.print();
         p.open(3, 1);
-        p.print();
+        //p.print();
         p.open(3, 2);
-        p.print();
+        //p.print();
         p.open(3, 4);
-        p.print();
+        //p.print();
         p.open(4, 1);
-        p.print();
+        //p.print();
         p.open(4, 4);
-        p.print();
+        //p.print();
 
         assertFalse(p.isFull(3, 1));
     }

@@ -1,6 +1,6 @@
-import java.util.Arrays;
+//import java.util.Arrays;
 
-import unionfind.WeightedQuickUnionUF;
+//import unionfind.WeightedQuickUnionUF;
 
 
 /**
@@ -136,13 +136,13 @@ public class Percolation {
         }
     }
 
-    public void print() {
+//    public void print() {
 //        System.out.println("Siz" +
 //                "e: " + fieldsState.length);
 //        System.out.println(Arrays.toString(fieldsState));
 //        System.out.println(">> " + Arrays.toString(uf.getElements()));
-        uf.print();
-    }
+//        uf.print();
+//    }
 
 }
 
