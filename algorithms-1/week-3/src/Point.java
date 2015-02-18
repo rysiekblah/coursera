@@ -54,11 +54,11 @@ public class Point implements Comparable<Point> {
     public double slopeTo(Point that) {
         /* YOUR CODE HERE */
         //System.out.println(" -- p1: " + that.toString() + ", p0: " + toString());
-        if(that.x==this.x && that.y==this.y) return Double.NEGATIVE_INFINITY;
-        if(that.y - this.y == 0) return 0;
-        if(that.x - this.x == 0) return Double.POSITIVE_INFINITY;
+        if (that.x == this.x && that.y == this.y) return Double.NEGATIVE_INFINITY;
+        if (that.y - this.y == 0) return 0;
+        if (that.x - this.x == 0) return Double.POSITIVE_INFINITY;
         //System.out.println(" ---- calc -- y: " + (that.y - this.y) + ", x: " + (that.x - this.x) + ", y/x: " + (double)(that.y - this.y) / (that.x - this.x));
-        return (double)(that.y - this.y) / (that.x - this.x);
+        return (double) (that.y - this.y) / (that.x - this.x);
     }
 
     // is this point lexicographically smaller than that one?
