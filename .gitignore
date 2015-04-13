@@ -2,6 +2,8 @@
 *.iml
 *out
 *lib_managed
+*lib
+*bin
 *target
 *submission
 
