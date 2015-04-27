@@ -99,4 +99,26 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     assert(resultRed2() == "red")
   }
 
+  // Polynominal
+  test("computeDelta static") {
+    assert(0 == Polynomial.computeDelta(Var(4), Var(4), Var(1))())
+    assert(-3 == Polynomial.computeDelta(Var(1), Var(1), Var(1))())
+    assert(-3 == Polynomial.computeDelta(Var(1), Var(-1), Var(1))())
+  }
+
+  test("computeDelta dynamic") {
+    val a = Var(1.0)
+    val b = Var(1.0)
+    val c = Var(1.0)
+    assert(-3 == Polynomial.computeDelta(a, b, c)())
+    a() = 4.0
+    b() = 4.0
+    c() = 1.0
+    assert(0 == Polynomial.computeDelta(a, b, c)())
+    a() = 1.0
+    b() = -1.0
+    c() = 1.0
+    assert(-3 == Polynomial.computeDelta(a, b, c)())
+  }
+
 }
