@@ -12,6 +12,37 @@ import TweetLength.MaxTweetLength
 @RunWith(classOf[JUnitRunner])
 class CalculatorSuite extends FunSuite with ShouldMatchers {
 
+//  def signal1(sig: Signal[Int]): Signal[Int] = {
+//    val vSig = sig()
+//    Signal(vSig)
+//  }
+//
+//  def signal2(sig: Signal[Int]): Signal[Int] = {
+//    val vSig = sig()
+//    Signal({
+//      val vSig = sig()
+//      vSig
+//    }
+//    )
+//  }
+//
+//  // Signal tests
+//  test("Signal triger check") {
+//    var sig1 = Signal(123)
+//    val sig2 = signal1(sig1)
+//    assert(sig1() == sig2())
+//    sig1 = Signal(2)
+//    assert(sig1() != sig2())
+//  }
+//
+//  test("Signal triger check 2") {
+//    var sig1 = Signal(123)
+//    val sig2 = signal2(sig1)
+//    assert(sig1() == sig2())
+//
+//    assert(sig1() == sig2())
+//  }
+
   /******************
    ** TWEET LENGTH **
    ******************/
@@ -33,6 +64,23 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     assert(result() == MaxTweetLength - tweetLength("foo blabla \uD83D\uDCA9 bar"))
   }
 
+  test("tweetRemainingCharsCount dynamic changes") {
+    val text = Var("1234567890")
+    val remining = TweetLength.tweetRemainingCharsCount(text)
+    assert(remining() == 130)
+    text() = "12345678901234567890"
+    assert(remining() == 120)
+  }
+
+  test("tweetRemainingCharsCount dynamic changes test") {
+    val len = Var(16)
+    val color = TweetLength.colorForRemainingCharsCount(len)
+    assert(color() == "green")
+    len() = 14
+    assert(color() == "orange")
+    len() = -1
+    assert(color() == "red")
+  }
 
   test("colorForRemainingCharsCount with a constant signal") {
     val resultGreen1 = TweetLength.colorForRemainingCharsCount(Var(52))
