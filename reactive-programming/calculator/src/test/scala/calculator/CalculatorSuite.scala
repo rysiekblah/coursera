@@ -121,4 +121,45 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     assert(-3 == Polynomial.computeDelta(a, b, c)())
   }
 
+  test("computeSolutions - compute roots -1") {
+    val a = Var(2.0)
+    val b = Var(-4.0)
+    val c = Var(2.0)
+    assert(Polynomial.computeSolutions(a, b, c, Polynomial.computeDelta(a, b, c))().size == 1)
+    assert(Polynomial.computeSolutions(a, b, c, Polynomial.computeDelta(a, b, c))().contains(1.0))
+  }
+
+  test("computeSolutions - compute roots - no roots") {
+    val a = Var(-5.0)
+    val b = Var(6.0)
+    val c = Var(-2.0)
+    assert(Polynomial.computeSolutions(a, b, c, Polynomial.computeDelta(a, b, c))().size == 0)
+  }
+
+  test("computeSolutions - compute roots -2") {
+    val a = Var(-1.0)
+    val b = Var(3.0)
+    val c = Var(4.0)
+    val delta = Polynomial.computeDelta(a, b, c)
+    val roots = Polynomial.computeSolutions(a, b, c, delta)
+    assert(roots().size == 2)
+    assert(roots().contains(-1.0))
+    assert(roots().contains(4.0))
+
+    a() = 2.0
+    b() = -4.0
+    c() = 2.0
+    assert(delta() == 0)
+    assert(roots().size == 1)
+    assert(roots().contains(1.0))
+
+    a() = -1.0
+    b() = 3.0
+    c() = 4.0
+    assert(delta() == 25)
+    assert(roots().size == 2)
+    assert(roots().contains(-1.0))
+    assert(roots().contains(4.0))
+  }
+
 }

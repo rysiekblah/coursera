@@ -5,17 +5,22 @@ import lecture.User
 /**
  * Created by tomek on 4/26/15.
  */
-class Order[T](user: => T) {
-  var myExpr: () => T = _
-  var myVal: T = _
+class Order[T](u: => User[T]) {
+  //var myExpr: () => T = _
+  //var myVal: T = _
+  var user: User[T] = u
 
-  def update(user: => T) = myVal = user
+  def update(u: => User[T]) = user = u
 
   def apply() = {
-    myVal
+    //println("Somethinglkslkjlskf")
+    user
   }
 }
 
 object Order {
-  def apply[T](user: => T) = new Order(user)
+  def apply[T](user: => User[T]) =  {
+    //println("Order with user: " + user.show)
+    new Order(user)
+  }
 }
