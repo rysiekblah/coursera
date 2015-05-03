@@ -12,37 +12,6 @@ import TweetLength.MaxTweetLength
 @RunWith(classOf[JUnitRunner])
 class CalculatorSuite extends FunSuite with ShouldMatchers {
 
-//  def signal1(sig: Signal[Int]): Signal[Int] = {
-//    val vSig = sig()
-//    Signal(vSig)
-//  }
-//
-//  def signal2(sig: Signal[Int]): Signal[Int] = {
-//    val vSig = sig()
-//    Signal({
-//      val vSig = sig()
-//      vSig
-//    }
-//    )
-//  }
-//
-//  // Signal tests
-//  test("Signal triger check") {
-//    var sig1 = Signal(123)
-//    val sig2 = signal1(sig1)
-//    assert(sig1() == sig2())
-//    sig1 = Signal(2)
-//    assert(sig1() != sig2())
-//  }
-//
-//  test("Signal triger check 2") {
-//    var sig1 = Signal(123)
-//    val sig2 = signal2(sig1)
-//    assert(sig1() == sig2())
-//
-//    assert(sig1() == sig2())
-//  }
-
   /******************
    ** TWEET LENGTH **
    ******************/
@@ -162,4 +131,135 @@ class CalculatorSuite extends FunSuite with ShouldMatchers {
     assert(roots().contains(4.0))
   }
 
+  //Calculator - exel sheet test suite
+    // calculation
+    test("One cell - Literal expr") {
+      val literal = Literal(2.0)
+      val column:Map[String, Signal[Expr]] = Map("a" -> Signal{literal})
+      val res = Calculator.computeValues(column)
+      assert(res.size == 1)
+      assert(res.apply("a")() == 2.0)
+    }
+
+    test("Plus - two literals") {
+      val a = Literal(2.0)
+      val b = Literal(3.0)
+      val plus = Plus(a, b)
+      val exprs: Map[String, Signal[Expr]] = Map("a" -> Signal(plus))
+      val res = Calculator.computeValues(exprs)
+      assert(res.size == 1)
+      assert(res.apply("a")() == 5.0)
+    }
+
+    test("Plus one Ref and one Literal") {
+      val a = Literal(3.0)
+      val b = Literal(4.0)
+      val ref = Ref("b")
+      val expres: Map[String, Signal[Expr]] = Map("a" -> Signal(Plus(a, ref)), "b" -> Signal(b))
+      val res = Calculator.computeValues(expres)
+      assert(res.size == 2)
+      assert(res.apply("a")() == 7.0)
+    }
+
+    test("Plus two Ref") {
+      val expr:Map[String, Signal[Expr]] = Map(
+        "a" -> Signal(Plus(Ref("b"), Ref("c"))),
+        "b" -> Signal(Literal(44.0)),
+        "c" -> Signal(Literal(11.0))
+      )
+      assert(Calculator.computeValues(expr).apply("a")() == 55.0)
+    }
+
+    test("3 Plus") {
+      val expr:Map[String, Signal[Expr]] = Map(
+        "a" -> Signal(Plus(Plus(Ref("b"), Ref("c")), Plus(Ref("d"), Ref("e")))),
+        "b" -> Signal(Literal(44.0)),
+        "c" -> Signal(Literal(11.0)),
+        "d" -> Signal(Literal(11.0)),
+        "e" -> Signal(Literal(11.0))
+      )
+      assert(Calculator.computeValues(expr).apply("a")() == 77.0)
+    }
+
+  test("Divide by zero 1") {
+    val expr:Map[String, Signal[Expr]] = Map(
+      "a" -> Signal(Divide(Literal(6.0), Literal(0.0)))
+    )
+    assert(Calculator.computeValues(expr).apply("a")() == Double.PositiveInfinity)
+  }
+
+  test("Divide by zero 2") {
+    val expr:Map[String, Signal[Expr]] = Map(
+      "a" -> Signal(Divide(Literal(-6.0), Literal(0.0)))
+    )
+    assert(Calculator.computeValues(expr).apply("a")() == Double.NegativeInfinity)
+  }
+
+    test("Not exist Ref") {
+      val expr:Map[String, Signal[Expr]] = Map(
+        "a" -> Signal(Plus(Ref("b"), Literal(3.0)))
+      )
+      assert(java.lang.Double.isNaN(Calculator.computeValues(expr).apply("a")()))
+    }
+
+    test("No Cyclic") {
+      val expr:Map[String, Signal[Expr]] = Map(
+        "a" -> Signal(Ref("b")),
+        "b" -> Signal(Ref("c")),
+        "c" -> Signal(Literal(11.0))
+      )
+      assert(Calculator.computeValues(expr).apply("a")() == 11.0)
+      assert(Calculator.computeValues(expr).apply("b")() == 11.0)
+      assert(Calculator.computeValues(expr).apply("c")() == 11.0)
+    }
+
+  test("Cyclic 1") {
+    val expr:Map[String, Signal[Expr]] = Map(
+      "a" -> Signal(Ref("b")),
+      "b" -> Signal(Ref("a")),
+      "c" -> Signal(Literal(11.0))
+    )
+    assert(java.lang.Double.isNaN(Calculator.computeValues(expr).apply("a")()))
+  }
+
+  test("Cyclic 2") {
+    val expr:Map[String, Signal[Expr]] = Map(
+      "a" -> Signal(Ref("b")),
+      "b" -> Signal(Ref("c")),
+      "c" -> Signal(Ref("a"))
+    )
+    assert(java.lang.Double.isNaN(Calculator.computeValues(expr).apply("a")()))
+  }
+
+  test("Cyclic 3") {
+    val expr:Map[String, Signal[Expr]] = Map(
+      "a" -> Signal(Ref("b")),
+      "b" -> Signal(Plus(Ref("a"), Ref("a")))
+    )
+    assert(java.lang.Double.isNaN(Calculator.computeValues(expr).apply("a")()))
+  }
+
+  test("Cyclic - a=Ref(b), b=Ref(a) + Ref(c)") {
+    val expr:Map[String, Signal[Expr]] = Map(
+      "a" -> Signal(Ref("b")),
+      "b" -> Signal(Plus(Ref("a"), Ref("c"))),
+      "c" -> Signal(Literal(4.0))
+    )
+    assert(java.lang.Double.isNaN(Calculator.computeValues(expr).apply("a")()))
+  }
+
+  test("Cyclic - a=Ref(b), b=Ref(a) + Literal") {
+    val expr:Map[String, Signal[Expr]] = Map(
+      "a" -> Signal(Ref("b")),
+      "b" -> Signal(Plus(Ref("a"), Literal(4.0)))
+    )
+    assert(java.lang.Double.isNaN(Calculator.computeValues(expr).apply("a")()))
+  }
+
+  test("Cyclic to itself") {
+    val expr:Map[String, Signal[Expr]] = Map(
+      "a" -> Signal(Ref("a"))
+    )
+    assert(java.lang.Double.isNaN(Calculator.computeValues(expr).apply("a")()))
+  }
 }
