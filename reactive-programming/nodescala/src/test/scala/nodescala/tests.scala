@@ -30,8 +30,34 @@ class NodeScalaSuite extends FunSuite {
       case t: TimeoutException => // ok!
     }
   }
-
-  
+  test("Test Future.all") {
+    val listFtrs:List[Future[Int]] = List(Future.always(1), Future.always(2), Future.always(3))
+    val allFtrs = Future.all(listFtrs)
+    assert(Await.result(allFtrs, 1 seconds).sum == 6)
+  }
+  test("Test Future.any") {
+    val list:List[Future[Int]] = List(Future.always(1), Future.always(2), Future.never[Int])
+    val any = Future.any(list)
+    //
+    any.onComplete {
+      case Success(num) =>
+        assert(Await.result(any, 0 nanos) == 1 || Await.result(any, 0 nanos) == 2)
+      case Failure(ex) => assert(true)
+      case _ => assert(false)
+    }
+  }
+  test("Test.now - returns value") {
+    val v = FutureOps(Future.always(2)).now
+    assert(v == 2)
+  }
+  test("Test.now - throws ex") {
+    try {
+      val v = FutureOps(Future.never).now
+      assert(false)
+    } catch {
+      case t: NoSuchElementException =>
+    }
+  }
   
   class DummyExchange(val request: Request) extends Exchange {
     @volatile var response = ""

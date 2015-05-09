@@ -29,7 +29,6 @@ package object nodescala {
      */
     def never[T]: Future[T] = {
       val p = Promise[T]()
-      p.failure(new TimeoutException)
       p.future
     }
 
@@ -38,7 +37,7 @@ package object nodescala {
      *  The values in the list are in the same order as corresponding futures `fs`.
      *  If any of the futures `fs` fails, the resulting future also fails.
      */
-    def all[T](fs: List[Future[T]]): Future[List[T]] = ???
+    def all[T](fs: List[Future[T]]): Future[List[T]] = Future.sequence(fs)
     /** Given a list of futures `fs`, returns the future holding the value of the future from `fs` that completed first.
      *  If the first completing future in `fs` fails, then the result is failed as well.
      *
@@ -48,11 +47,15 @@ package object nodescala {
      *
      *  may return a `Future` succeeded with `1`, `2` or failed with an `Exception`.
      */
-    def any[T](fs: List[Future[T]]): Future[T] = ???
+    def any[T](fs: List[Future[T]]): Future[T] = Future.firstCompletedOf(fs)
 
     /** Returns a future with a unit value that is completed after time `t`.
      */
-    def delay(t: Duration): Future[Unit] = ???
+    def delay(t: Duration): Future[Unit] = Future {
+      blocking{
+        Thread.sleep(t.toMillis)
+      }
+    }
 
     /** Completes this future with user input.
      */
@@ -80,7 +83,10 @@ package object nodescala {
      *  However, it is also non-deterministic -- it may throw or return a value
      *  depending on the current state of the `Future`.
      */
-    def now: T = ???
+    def now: T = f.value match {
+      case None => throw new NoSuchElementException
+      case Some(v) => v.get
+    }
 
     /** Continues the computation of this future by taking the current future
      *  and mapping it into another future.
