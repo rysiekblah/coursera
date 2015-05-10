@@ -58,7 +58,29 @@ class NodeScalaSuite extends FunSuite {
       case t: NoSuchElementException =>
     }
   }
-  
+  test("continouswith test with dely") {
+    val delay = Future.delay(100 millis)
+    val always = (f:Future[Unit]) => 111
+    
+    try {
+      assert(Await.result(delay.continueWith(always), 150 millis) == 111)
+    } catch {
+      case ex: TimeoutException => assert(false)
+    }
+  }
+  test("continouswith test with exceeded dely") {
+    val delay = Future.delay(200 millis)
+    val always = (f:Future[Unit]) => 111
+
+    try {
+      assert(Await.result(delay.continueWith(always), 150 millis) == 111)
+      assert(false)
+    } catch {
+      case ex: TimeoutException =>
+    }
+
+  }
+
   class DummyExchange(val request: Request) extends Exchange {
     @volatile var response = ""
     val loaded = Promise[String]()
