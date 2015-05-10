@@ -33,7 +33,7 @@ trait NodeScala {
     while (response.hasNext && token.nonCancelled) {
       exchange.write(response.next())
     }
-    if(token.nonCancelled) exchange.close()
+    exchange.close()
   }
 
   /** A server:
@@ -48,11 +48,17 @@ trait NodeScala {
    */
   def start(relativePath: String)(handler: Request => Response): Subscription = {
     val listener = createListener(relativePath)
-    val listenerSubscription = listener.start()
-
-
-
-    listenerSubscription
+    Subscription(
+      listener.start(),
+      Future.run() { ct =>
+        async {
+          while (ct.nonCancelled) {
+            val (request, exchange) = await { listener.nextRequest }
+            respond(exchange, ct, handler(request))
+          }
+        }
+      }
+    )
   }
 
 }
